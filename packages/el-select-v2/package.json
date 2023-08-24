@@ -1,0 +1,22 @@
+{
+  "name": "el-select-v2",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "module": "src/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kooriookami/el-select-v2"
+  },
+  "keywords": [
+    "el-select-v2",
+    "el-virtual-select",
+    "vue"
+  ],
+  "author": "kooriookami",
+  "license": "ISC",
+  "dependencies": {
+    "element-ui": "^2.15.13",
+    "vue": "^2.7.14",
+    "vue-virtual-scroller": "^1.1.2"
+  }
+}

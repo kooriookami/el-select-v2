@@ -1,11 +1,16 @@
 <template>
-  <div>
-    <el-button>123</el-button>
-  </div>
+  <Demo />
 </template>
 
 <script>
+  import Demo from '@/components/Demo.vue';
 
+  export default {
+    name: 'App',
+    components: {
+      Demo,
+    },
+  };
 </script>
 
 <style lang="scss" scoped>

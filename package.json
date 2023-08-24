@@ -3,12 +3,20 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "build:lib": "vite build -- lib",
+    "preview": "vite preview",
+    "publish": "npm publish dist/ --registry https://registry.npmjs.org",
+    "lint": "eslint ./src --ext .vue,.js,.ts,.jsx,.tsx",
+    "lint-fix": "eslint --fix ./src --ext .vue,.js,.ts,.jsx,.tsx"
   },
   "dependencies": {
+    "el-select-v2": "workspace:*",
     "element-ui": "^2.15.13",
     "vue": "^2.7.14"
   },
@@ -17,6 +25,7 @@
     "eslint": "^8.47.0",
     "eslint-define-config": "^1.23.0",
     "eslint-plugin-vue": "^9.17.0",
+    "jsonfile": "^6.1.0",
     "rollup-plugin-copy": "^3.4.0",
     "sass": "^1.66.1",
     "vite": "^4.4.5"
