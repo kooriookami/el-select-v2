@@ -1,0 +1,35 @@
+@use "variable" as *;
+
+// dialog样式
+.el-dialog {
+  .el-dialog__body {
+    padding: 10px 20px;
+  }
+}
+
+.el-image {
+  .el-image__inner {
+    opacity: 1;
+  }
+
+  .el-image__placeholder {
+    background: none;
+  }
+}
+
+.el-form {
+  .el-form-item {
+    & > .el-input, .el-cascader, .el-select, .el-date-editor, .el-autocomplete {
+      width: 100%;
+    }
+
+    .el-row {
+      flex-grow: 1;
+    }
+  }
+}
+
+.el-row {
+  display: flex;
+  flex-wrap: wrap;
+}

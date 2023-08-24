@@ -16,8 +16,11 @@
     "lint-fix": "eslint --fix ./src --ext .vue,.js,.ts,.jsx,.tsx"
   },
   "dependencies": {
+    "@iconify/vue2": "^2.1.0",
+    "@vueuse/core": "^10.3.0",
     "el-select-v2": "workspace:*",
     "element-ui": "^2.15.13",
+    "normalize.css": "^8.0.1",
     "vue": "^2.7.14"
   },
   "devDependencies": {

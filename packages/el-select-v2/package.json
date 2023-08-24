@@ -16,6 +16,7 @@
   "license": "ISC",
   "dependencies": {
     "element-ui": "^2.15.13",
+    "lodash": "^4.17.21",
     "vue": "^2.7.14",
     "vue-virtual-scroller": "^1.1.2"
   }
