@@ -184,7 +184,6 @@
       options: {
         handler() {
           this.localOptions = this.options;
-          this.updateSelectedLabel();
         },
         deep: true,
         immediate: true,
