@@ -10,7 +10,8 @@
   "keywords": [
     "el-select-v2",
     "el-virtual-select",
-    "vue"
+    "vue",
+    "element-ui"
   ],
   "author": "kooriookami",
   "license": "ISC",

@@ -26,7 +26,6 @@
     :popper-append-to-body="popperAppendToBody"
     v-bind="$attrs"
     v-on="$listeners"
-    @change="handleSelectChange"
     @focus="handleSelectFocus"
   >
     <RecycleScroller
@@ -129,17 +128,37 @@
         localOptions: [],
       };
     },
+    mounted() {
+      this.updateSelectedLabel();
+    },
     methods: {
+      updateSelectedLabel() {
+        if (!this.$refs.select) {
+          return;
+        }
+        const { setSelected, cachedOptions } = this.$refs.select;
+        const values = this.multiple ? this.localValue : [this.localValue];
+        const selectedOptions = this.options.filter(option => values?.includes(option[this.valueKey])).map(option => ({
+          value: option[this.valueKey],
+          currentLabel: option[this.labelKey],
+        }));
+        selectedOptions.forEach(option => {
+          const cachedOption = cachedOptions.find(cachedOption => cachedOption.value === option.value);
+          if (cachedOption) {
+            cachedOption.currentLabel = option.currentLabel;
+          } else {
+            cachedOptions.push(option);
+          }
+        });
+        setSelected();
+      },
       handleScrollerVisible() {
-        const index = this.localOptions.findIndex(option => option[this.valueKey] === this.localValue);
+        const firstValue = this.multiple ? this.localValue?.[0] : this.localValue;
+        const index = this.localOptions.findIndex(option => option[this.valueKey] === firstValue);
         this.$refs.scroller.scrollToItem(index);
       },
       localFilterMethod(query) {
         this.localOptions = this.options.filter(option => option[this.labelKey].toLowerCase().includes(query.toLowerCase()));
-      },
-      handleSelectChange(value) {
-        this.localValue = value;
-        this.$emit('input', value);
       },
       handleSelectFocus() {
         this.localOptions = this.options;
@@ -156,6 +175,7 @@
         handler() {
           if (!isEqual(this.value, this.localValue)) {
             this.localValue = this.value;
+            this.updateSelectedLabel();
           }
         },
         deep: true,
@@ -164,6 +184,7 @@
       options: {
         handler() {
           this.localOptions = this.options;
+          this.updateSelectedLabel();
         },
         deep: true,
         immediate: true,
@@ -173,26 +194,26 @@
 </script>
 
 <style lang="scss">
-.scroller {
-  max-height: 238px;
+  .scroller {
+    max-height: 238px;
 
-  &::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-    background-color: transparent;
-  }
+    &::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+      background-color: transparent;
+    }
 
-  &::-webkit-scrollbar-thumb {
-    border-radius: 4px;
-    background-color: rgba(144, 147, 153, .3);
+    &::-webkit-scrollbar-thumb {
+      border-radius: 4px;
+      background-color: rgba(144, 147, 153, .3);
 
-    &:hover {
-      background-color: rgba(144, 147, 153, .5);
+      &:hover {
+        background-color: rgba(144, 147, 153, .5);
+      }
     }
   }
-}
 
-.el-scrollbar__bar {
-  display: none;
-}
+  .el-scrollbar__bar {
+    display: none;
+  }
 </style>

@@ -6,7 +6,7 @@
           <p class="title">基础用法</p>
           <p class="description">适用广泛的基础选择器</p>
           <el-select-v2
-            v-model="value1"
+            v-model="form.value1"
             :options="options"
             :size="form.size"
           />
@@ -15,7 +15,7 @@
           <p class="title">有禁用选项</p>
           <p class="description">在 options 中，设定 disabled 值为 true，即可禁用该选项</p>
           <el-select-v2
-            v-model="value2"
+            v-model="form.value2"
             :options="disabledOptions"
             :size="form.size"
           />
@@ -24,7 +24,7 @@
           <p class="title">禁用状态</p>
           <p class="description">选择器不可用状态</p>
           <el-select-v2
-            v-model="value3"
+            v-model="form.value3"
             :options="options"
             :size="form.size"
             disabled
@@ -34,7 +34,7 @@
           <p class="title">可清空单选</p>
           <p class="description">包含清空按钮，可将选择器清空为初始状态</p>
           <el-select-v2
-            v-model="value4"
+            v-model="form.value4"
             :options="options"
             :size="form.size"
             clearable
@@ -44,7 +44,7 @@
           <p class="title">基础多选</p>
           <p class="description">基础多选</p>
           <el-select-v2
-            v-model="value5"
+            v-model="form.value5"
             :options="options"
             :size="form.size"
             multiple
@@ -54,7 +54,7 @@
           <p class="title">自定义模板</p>
           <p class="description">可以自定义备选项</p>
           <el-select-v2
-            v-model="value6"
+            v-model="form.value6"
             :options="options"
             :size="form.size"
           >
@@ -68,7 +68,7 @@
           <p class="title">可搜索</p>
           <p class="description">可以利用搜索功能快速查找选项</p>
           <el-select-v2
-            v-model="value7"
+            v-model="form.value7"
             :options="options"
             :size="form.size"
             filterable
@@ -78,7 +78,7 @@
           <p class="title">远程搜索</p>
           <p class="description">从服务器搜索数据，输入关键字进行查找</p>
           <el-select-v2
-            v-model="value8"
+            v-model="form.value8"
             :options="remoteOptions"
             :size="form.size"
             remote
@@ -91,7 +91,7 @@
           <p class="title">创建条目</p>
           <p class="description">可以创建并选中选项中不存在的条目</p>
           <el-select-v2
-            v-model="value9"
+            v-model="form.value9"
             :options="options"
             :size="form.size"
             multiple
@@ -130,6 +130,11 @@
             </el-radio-group>
           </el-form-item>
         </el-form>
+
+        <div class="button-group">
+          <el-button type="primary" size="small" @click="randomSelect">随机选择</el-button>
+          <el-button plain size="small" @click="insertOption">插入第一个选择器</el-button>
+        </div>
       </div>
     </div>
   </div>
@@ -151,16 +156,16 @@
         options: [],
         disabledOptions: [],
         remoteOptions: [],
-        value1: '',
-        value2: '',
-        value3: '',
-        value4: '',
-        value5: [],
-        value6: '',
-        value7: '',
-        value8: '',
-        value9: [],
         form: {
+          value1: '',
+          value2: '',
+          value3: '',
+          value4: '',
+          value5: [],
+          value6: '',
+          value7: '',
+          value8: '',
+          value9: [],
           size: 'small',
         },
       };
@@ -211,83 +216,102 @@
           this.remoteOptions = [];
         }
       },
+      randomSelect() {
+        Object.keys(this.form).forEach(key => {
+          if (key.startsWith('value')) {
+            const index = Math.floor(Math.random() * this.options.length);
+            this.form[key] = Array.isArray(this.form[key]) ? [this.options[index].value] : this.options[index].value;
+          }
+        });
+      },
+      insertOption() {
+        const timestamp = new Date().getTime();
+        this.options.push({
+          value: `value ${timestamp}`,
+          label: `label ${timestamp}`,
+        });
+        this.form.value1 = `value ${timestamp}`;
+      },
     },
   };
 </script>
 
 <style lang="scss" scoped>
-.demo-container {
-  height: 100vh;
-  display: flex;
-  overflow: hidden;
+  .demo-container {
+    height: 100vh;
+    display: flex;
+    overflow: hidden;
 
-  .demo-content {
-    height: 100%;
-    overflow: auto;
-    flex-grow: 1;
-    position: relative;
-    padding: 20px;
+    .demo-content {
+      height: 100%;
+      overflow: auto;
+      flex-grow: 1;
+      position: relative;
+      padding: 20px;
 
-    .title {
-      color: var(--normal-color);
-      font-weight: bold;
-      font-size: 24px;
+      .title {
+        color: var(--normal-color);
+        font-weight: bold;
+        font-size: 24px;
+      }
+
+      .description {
+        color: var(--main-color);
+        font-size: 16px;
+      }
+
+      .el-select {
+        width: 240px;
+      }
     }
 
-    .description {
-      color: var(--main-color);
-      font-size: 16px;
-    }
+    .form {
+      height: 100%;
+      overflow: auto;
+      width: 400px;
+      flex-shrink: 0;
+      border-left: 1px solid var(--border-color);
 
-    .el-select {
-      width: 240px;
-    }
-  }
+      .form-header {
+        padding: 30px 20px;
+        font-size: 18px;
+        font-weight: bold;
+        border-bottom: 1px solid var(--border-color);
 
-  .form {
-    height: 100%;
-    overflow: auto;
-    width: 400px;
-    flex-shrink: 0;
-    border-left: 1px solid var(--border-color);
+        .form-title {
+          display: flex;
+          flex-wrap: wrap;
+          align-items: center;
 
-    .form-header {
-      padding: 30px 20px;
-      font-size: 18px;
-      font-weight: bold;
-      border-bottom: 1px solid var(--border-color);
+          .github-icon {
+            margin-left: 5px;
+            cursor: pointer;
+          }
+        }
 
-      .form-title {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-
-        .github-icon {
-          margin-left: 5px;
-          cursor: pointer;
+        .form-description {
+          margin-top: 20px;
+          font-size: 12px;
+          font-weight: normal;
+          color: var(--info-color);
         }
       }
 
-      .form-description {
-        margin-top: 20px;
-        font-size: 12px;
-        font-weight: normal;
-        color: var(--info-color);
-      }
-    }
+      .form-main {
+        padding: 20px;
 
-    .form-main {
-      padding: 20px;
+        .button-group {
+          margin-top: 20px;
+          display: flex;
+          flex-wrap: wrap;
+          gap: 20px;
 
-      ::v-deep(.el-form) {
-        .el-form-item {
-          .tip {
-            margin-left: 10px;
-            color: var(--normal-color);
+          .el-button {
+            width: 100%;
+            margin: 0;
           }
         }
       }
     }
   }
-}
 </style>

@@ -1,6 +1,6 @@
 # Select V2 虚拟列表选择器
 
-适用于 Vue 2 版本的虚拟列表选择器组件。
+基于 Element UI 适用于 Vue 2 版本的虚拟列表选择器组件。
 
 ## 在线演示
 
@@ -75,13 +75,13 @@
 | remote-method         | 远程搜索方法                                           | function                  | —                 | —     |
 | loading               | 是否正在从远程获取数据                                      | boolean                   | —                 | false |
 | loading-text          | 远程加载时显示的文字                                       | string                    | —                 | 加载中   |
-| no-match-text         | 搜索条件无匹配时显示的文字，也可以使用`slot="empty"`设置              | string                    | —                 | 无匹配数据 |
-| no-data-text          | 选项为空时显示的文字，也可以使用`slot="empty"`设置                 | string                    | —                 | 无数据   |
+| no-match-text         | 搜索条件无匹配时显示的文字，也可以使用 `slot="empty"` 设置            | string                    | —                 | 无匹配数据 |
+| no-data-text          | 选项为空时显示的文字，也可以使用 `slot="empty"` 设置               | string                    | —                 | 无数据   |
 | popper-class          | Select 下拉框的类名                                    | string                    | —                 | —     |
 | reserve-keyword       | 多选且可搜索时，是否在选中一个选项后保留当前的搜索关键词                     | boolean                   | —                 | false |
-| default-first-option  | 在输入框按下回车，选择第一个匹配项。需配合 `filterable` 或 `remote` 使用 | boolean                   | -                 | false |
-| popper-append-to-body | 是否将弹出框插入至 body 元素。在弹出框的定位出现问题时，可将该属性设置为 false    | boolean                   | -                 | true  |
-| automatic-dropdown    | 对于不可搜索的 Select，是否在输入框获得焦点后自动弹出选项菜单               | boolean                   | -                 | false |
+| default-first-option  | 在输入框按下回车，选择第一个匹配项。需配合 `filterable` 或 `remote` 使用 | boolean                   | —                 | false |
+| popper-append-to-body | 是否将弹出框插入至 body 元素。在弹出框的定位出现问题时，可将该属性设置为 false    | boolean                   | —                 | true  |
+| automatic-dropdown    | 对于不可搜索的 Select，是否在输入框获得焦点后自动弹出选项菜单               | boolean                   | —                 | false |
 
 ### Select Events
 | 事件名称           | 说明                   | 回调参数                 |
@@ -101,7 +101,7 @@
 | empty  | 无选项时的列表            |
 
 
-### Option Attributes
+### Options
 | 参数       | 说明                        | 类型                   | 可选值 | 默认值   |
 |----------|---------------------------|----------------------|-----|-------|
 | value    | 选项的值                      | string/number/object | —   | —     |
@@ -111,5 +111,5 @@
 ### Methods
 | 方法名   | 说明                  | 参数 |
 |-------|---------------------|----|
-| focus | 使 input 获取焦点        | -  |
-| blur  | 使 input 失去焦点，并隐藏下拉框 | -  |
+| focus | 使 input 获取焦点        | —  |
+| blur  | 使 input 失去焦点，并隐藏下拉框 | —  |
