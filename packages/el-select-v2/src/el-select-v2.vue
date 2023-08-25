@@ -35,7 +35,7 @@
       v-slot="{ item }"
       class="scroller"
       :items="localOptions"
-      :item-size="itemSize"
+      :min-item-size="minItemSize"
       :key-field="valueKey"
       @visible="handleScrollerVisible"
     >
@@ -118,7 +118,7 @@
         type: Boolean,
         default: true,
       },
-      itemSize: {
+      minItemSize: {
         type: Number,
         default: 34,
       },
@@ -131,7 +131,8 @@
     },
     methods: {
       handleScrollerVisible() {
-        this.$refs.scroller.scrollToItem(100);
+        const index = this.localOptions.findIndex(option => option[this.valueKey] === this.localValue);
+        this.$refs.scroller.scrollToItem(index);
       },
       localFilterMethod(query) {
         this.localOptions = this.options.filter(option => option[this.labelKey].toLowerCase().includes(query.toLowerCase()));

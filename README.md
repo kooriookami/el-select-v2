@@ -57,7 +57,7 @@
 | options               | 列表数据                                             | array                     | —                 | —     |
 | value-key             | value 键名                                         | string                    | —                 | value |
 | label-key             | label 键名                                         | string                    | —                 | label |
-| item-size             | 每个选项的高度                                          | number                    | —                 | 34    |
+| min-item-size         | 每个选项的最小高度                                        | number                    | —                 | 34    |
 | multiple              | 是否多选                                             | boolean                   | —                 | false |
 | disabled              | 是否禁用                                             | boolean                   | —                 | false |
 | value-key             | 作为 value 唯一标识的键名，绑定值为对象类型时必填                     | string                    | —                 | value |
