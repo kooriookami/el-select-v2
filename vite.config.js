@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue2';
 import copy from 'rollup-plugin-copy';
+import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js';
 import jsonfile from 'jsonfile';
 import path from 'path';
 
@@ -42,6 +43,7 @@ const buildLib = {
       },
     },
     plugins: [
+      cssInjectedByJsPlugin(),
       copy({
         targets: [
           { src: 'LICENSE', dest: 'dist' },
