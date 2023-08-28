@@ -184,9 +184,12 @@
       options: {
         handler() {
           this.localOptions = this.options;
+          const inputs = this.$el.querySelectorAll('input');
+          if ([].indexOf.call(inputs, document.activeElement) === -1) {
+            this.updateSelectedLabel();
+          }
         },
         deep: true,
-        immediate: true,
       },
     },
   };

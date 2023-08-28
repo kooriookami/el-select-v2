@@ -17,21 +17,21 @@
   },
   "dependencies": {
     "@iconify/vue2": "^2.1.0",
-    "@vueuse/core": "^10.3.0",
+    "@vueuse/core": "^10.4.1",
     "el-select-v2": "workspace:*",
-    "element-ui": "^2.15.13",
+    "element-ui": "^2.15.14",
     "normalize.css": "^8.0.1",
     "vue": "^2.7.14"
   },
   "devDependencies": {
     "@vitejs/plugin-vue2": "^2.2.0",
-    "eslint": "^8.47.0",
+    "eslint": "^8.48.0",
     "eslint-define-config": "^1.23.0",
     "eslint-plugin-vue": "^9.17.0",
     "jsonfile": "^6.1.0",
     "rollup-plugin-copy": "^3.4.0",
     "sass": "^1.66.1",
-    "vite": "^4.4.5",
+    "vite": "^4.4.9",
     "vite-plugin-css-injected-by-js": "^3.3.0"
   }
 }
