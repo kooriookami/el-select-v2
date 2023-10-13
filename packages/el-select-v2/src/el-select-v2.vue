@@ -2,6 +2,7 @@
   <el-select
     ref="select"
     v-model="localValue"
+    class="el-select-v2"
     :autocomplete="autocomplete"
     :automatic-dropdown="automaticDropdown"
     :size="size"
@@ -10,7 +11,7 @@
     :filterable="filterable"
     :allow-create="allowCreate"
     :loading="loading"
-    :popper-class="popperClass"
+    :popper-class="`el-select-v2__popper ${popperClass || ''}`"
     :remote="remote"
     :loading-text="loadingText"
     :no-match-text="noMatchText"
@@ -196,26 +197,28 @@
 </script>
 
 <style lang="scss">
-  .scroller {
-    max-height: 238px;
+  .el-select-v2__popper {
+    .scroller {
+      max-height: 238px;
 
-    &::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
-      background-color: transparent;
-    }
+      &::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+        background-color: transparent;
+      }
 
-    &::-webkit-scrollbar-thumb {
-      border-radius: 4px;
-      background-color: rgba(144, 147, 153, .3);
+      &::-webkit-scrollbar-thumb {
+        border-radius: 4px;
+        background-color: rgba(144, 147, 153, .3);
 
-      &:hover {
-        background-color: rgba(144, 147, 153, .5);
+        &:hover {
+          background-color: rgba(144, 147, 153, .5);
+        }
       }
     }
-  }
 
-  .el-scrollbar__bar {
-    display: none;
+    .el-scrollbar__bar {
+      display: none;
+    }
   }
 </style>
