@@ -146,7 +146,7 @@
         selectedOptions.forEach(option => {
           const cachedOption = cachedOptions.find(cachedOption => cachedOption.value === option.value);
           if (cachedOption) {
-            cachedOption.currentLabel = option.currentLabel;
+            cachedOptions.splice(cachedOptions.indexOf(cachedOption), 1, option);
           } else {
             cachedOptions.push(option);
           }
