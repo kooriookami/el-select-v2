@@ -54,6 +54,7 @@
     <template v-if="$slots.empty" slot="empty">
       <slot name="empty" />
     </template>
+    <div class="placeholder-max-label" v-show="!textEllipsis && longestLabel">{{longestLabel}}</div>
   </el-select>
 </template>
 
@@ -122,15 +123,21 @@
         type: Number,
         default: 34,
       },
+      textEllipsis:{
+        type: Boolean,
+        default: true
+      }
     },
     data() {
       return {
         localValue: '',
         localOptions: [],
+        longestLabel: ''
       };
     },
     mounted() {
       this.updateSelectedLabel();
+	  this.updateLongestLabel();
     },
     methods: {
       updateSelectedLabel() {
@@ -170,6 +177,12 @@
       blur() {
         this.$refs.select.blur();
       },
+	  updateLongestLabel(){
+		if(!this.textEllipsis && this.options && this.options.length > 0){
+		  const maxLabelObject = this.options.reduce((prev, current) => prev[this.labelKey].length > current[this.labelKey].length ? prev : current);
+		  this.longestLabel = maxLabelObject[this.labelKey];
+		}  
+	  }
     },
     watch: {
       value: {
@@ -189,6 +202,7 @@
           if ([].indexOf.call(inputs, document.activeElement) === -1) {
             this.updateSelectedLabel();
           }
+		  this.updateLongestLabel();
         },
         deep: true,
       },
@@ -220,5 +234,11 @@
     .el-scrollbar__bar {
       display: none;
     }
+  }
+  .placeholder-max-label{
+    height: 0;
+    color: transparent;
+    visibility: hidden;
+    overflow: auto;
   }
 </style>
