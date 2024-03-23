@@ -27,7 +27,6 @@
     :popper-append-to-body="popperAppendToBody"
     v-bind="$attrs"
     v-on="$listeners"
-    @focus="handleSelectFocus"
   >
     <RecycleScroller
       v-if="localOptions.length"
@@ -131,6 +130,13 @@
     },
     mounted() {
       this.updateSelectedLabel();
+      if (this.$refs.select) {
+        this.$watch(() => this.$refs.select.visible, value => {
+          if (value) {
+            this.updateOptions();
+          }
+        });
+      }
     },
     methods: {
       updateSelectedLabel() {
@@ -161,7 +167,7 @@
       localFilterMethod(query) {
         this.localOptions = this.options.filter(option => option[this.labelKey].toLowerCase().includes(query.toLowerCase()));
       },
-      handleSelectFocus() {
+      updateOptions() {
         this.localOptions = this.options;
       },
       focus() {
@@ -184,7 +190,7 @@
       },
       options: {
         handler() {
-          this.localOptions = this.options;
+          this.updateOptions();
           const inputs = this.$el.querySelectorAll('input');
           if ([].indexOf.call(inputs, document.activeElement) === -1) {
             this.updateSelectedLabel();
@@ -197,28 +203,28 @@
 </script>
 
 <style lang="scss">
-  .el-select-v2__popper {
-    .scroller {
-      max-height: 238px;
+.el-select-v2__popper {
+  .scroller {
+    max-height: 238px;
 
-      &::-webkit-scrollbar {
-        width: 6px;
-        height: 6px;
-        background-color: transparent;
-      }
-
-      &::-webkit-scrollbar-thumb {
-        border-radius: 4px;
-        background-color: rgba(144, 147, 153, .3);
-
-        &:hover {
-          background-color: rgba(144, 147, 153, .5);
-        }
-      }
+    &::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+      background-color: transparent;
     }
 
-    .el-scrollbar__bar {
-      display: none;
+    &::-webkit-scrollbar-thumb {
+      border-radius: 4px;
+      background-color: rgba(144, 147, 153, .3);
+
+      &:hover {
+        background-color: rgba(144, 147, 153, .5);
+      }
     }
   }
+
+  .el-scrollbar__bar {
+    display: none;
+  }
+}
 </style>
