@@ -100,6 +100,17 @@
             default-first-option
           />
         </el-col>
+        <el-col :span="span">
+          <p class="title">自适应菜单宽度</p>
+          <p class="description">计算每一项的宽度，选择最大的作为下拉菜单宽度</p>
+          <el-select-v2
+            v-model="form.value10"
+            :options="longOptions"
+            :size="form.size"
+            :fit-input-width="false"
+            filterable
+          />
+        </el-col>
       </el-row>
     </div>
     <div class="form">
@@ -156,6 +167,7 @@
         options: [],
         disabledOptions: [],
         remoteOptions: [],
+        longOptions: [],
         form: {
           value1: '',
           value2: '',
@@ -166,6 +178,7 @@
           value7: '',
           value8: '',
           value9: [],
+          value10: '',
           size: 'small',
         },
       };
@@ -180,6 +193,10 @@
           value: `value ${i + 1}`,
           label: `label ${i + 1}`,
           disabled: i % 2 === 0,
+        });
+        this.longOptions.push({
+          value: `value ${i + 1}`,
+          label: `long long long long long long long label ${i + 1}`,
         });
       }
     },
@@ -237,81 +254,81 @@
 </script>
 
 <style lang="scss" scoped>
-  .demo-container {
-    height: 100vh;
-    display: flex;
-    overflow: hidden;
+.demo-container {
+  height: 100vh;
+  display: flex;
+  overflow: hidden;
 
-    .demo-content {
-      height: 100%;
-      overflow: auto;
-      flex-grow: 1;
-      position: relative;
-      padding: 20px;
+  .demo-content {
+    height: 100%;
+    overflow: auto;
+    flex-grow: 1;
+    position: relative;
+    padding: 20px;
 
-      .title {
-        color: var(--normal-color);
-        font-weight: bold;
-        font-size: 24px;
+    .title {
+      color: var(--normal-color);
+      font-weight: bold;
+      font-size: 24px;
+    }
+
+    .description {
+      color: var(--main-color);
+      font-size: 16px;
+    }
+
+    .el-select {
+      width: 240px;
+    }
+  }
+
+  .form {
+    height: 100%;
+    overflow: auto;
+    width: 400px;
+    flex-shrink: 0;
+    border-left: 1px solid var(--border-color);
+
+    .form-header {
+      padding: 30px 20px;
+      font-size: 18px;
+      font-weight: bold;
+      border-bottom: 1px solid var(--border-color);
+
+      .form-title {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+
+        .github-icon {
+          margin-left: 5px;
+          cursor: pointer;
+        }
       }
 
-      .description {
-        color: var(--main-color);
-        font-size: 16px;
-      }
-
-      .el-select {
-        width: 240px;
+      .form-description {
+        margin-top: 20px;
+        font-size: 12px;
+        font-weight: normal;
+        color: var(--info-color);
       }
     }
 
-    .form {
-      height: 100%;
-      overflow: auto;
-      width: 400px;
-      flex-shrink: 0;
-      border-left: 1px solid var(--border-color);
+    .form-main {
+      padding: 20px;
 
-      .form-header {
-        padding: 30px 20px;
-        font-size: 18px;
-        font-weight: bold;
-        border-bottom: 1px solid var(--border-color);
+      .button-group {
+        margin-top: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
 
-        .form-title {
-          display: flex;
-          flex-wrap: wrap;
-          align-items: center;
-
-          .github-icon {
-            margin-left: 5px;
-            cursor: pointer;
-          }
-        }
-
-        .form-description {
-          margin-top: 20px;
-          font-size: 12px;
-          font-weight: normal;
-          color: var(--info-color);
-        }
-      }
-
-      .form-main {
-        padding: 20px;
-
-        .button-group {
-          margin-top: 20px;
-          display: flex;
-          flex-wrap: wrap;
-          gap: 20px;
-
-          .el-button {
-            width: 100%;
-            margin: 0;
-          }
+        .el-button {
+          width: 100%;
+          margin: 0;
         }
       }
     }
   }
+}
 </style>

@@ -33,6 +33,7 @@
       ref="scroller"
       v-slot="{ item }"
       class="scroller"
+      :style="scrollerStyle"
       :items="localOptions"
       :min-item-size="minItemSize"
       :key-field="valueKey"
@@ -121,11 +122,16 @@
         type: Number,
         default: 34,
       },
+      fitInputWidth: {
+        type: Boolean,
+        default: true,
+      },
     },
     data() {
       return {
         localValue: '',
         localOptions: [],
+        dropdownWidth: '',
       };
     },
     mounted() {
@@ -170,11 +176,41 @@
       updateOptions() {
         this.localOptions = this.options;
       },
+      async updateDropdownWidth() {
+        if (!this.$refs.select?.$refs.popper || this.fitInputWidth) {
+          return;
+        }
+        const { inputWidth } = this.$refs.select;
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        await this.$nextTick();
+        const itemEl = this.$refs.select.$refs.popper.$el.querySelector('.el-select-dropdown__item');
+        if (!itemEl) {
+          return;
+        }
+        const style = getComputedStyle(itemEl);
+        const padding = parseFloat(style.paddingLeft) + parseFloat(style.paddingRight);
+        const scrollWidth = 6;
+        ctx.font = style.font;
+        let width = 0;
+        this.localOptions.forEach(option => {
+          const metrics = ctx.measureText(option[this.labelKey]);
+          width = Math.max(metrics.width, width);
+        });
+        this.dropdownWidth = Math.max(width + padding + scrollWidth, inputWidth - 2);
+      },
       focus() {
         this.$refs.select.focus();
       },
       blur() {
         this.$refs.select.blur();
+      },
+    },
+    computed: {
+      scrollerStyle() {
+        return {
+          width: this.dropdownWidth ? `${this.dropdownWidth}px` : '',
+        };
       },
     },
     watch: {
@@ -197,6 +233,9 @@
           }
         },
         deep: true,
+      },
+      localOptions() {
+        this.updateDropdownWidth();
       },
     },
   };
