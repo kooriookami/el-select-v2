@@ -13,17 +13,18 @@
 
 ```js
   import Vue from 'vue';
-  // 必须引入 element-ui
-  import ElementUI from 'element-ui';
-  import 'element-ui/lib/theme-chalk/index.css';
-  import ElSelectV2 from 'el-select-v2';
+// 必须引入 element-ui
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+import ElSelectV2 from 'el-select-v2';
 
-  Vue.use(ElSelectV2);
+Vue.use(ElSelectV2);
 ```
 
 ```vue
+
 <template>
-  <el-select-v2 v-model="value" :options="options" />
+  <el-select-v2 v-model="value" :options="options"/>
 </template>
 
 <script>
@@ -51,6 +52,7 @@
 [示例代码](src/components/Demo.vue)
 
 ### Select Attributes
+
 | 参数                      | 说明                                               | 类型                        | 可选值               | 默认值   |
 |-------------------------|--------------------------------------------------|---------------------------|-------------------|-------|
 | value / v-model         | 绑定值                                              | boolean / string / number | —                 | —     |
@@ -84,6 +86,7 @@
 | fit-input-width (1.1.0) | 下拉框的宽度是否与输入框相同，设置为 false 后自动计算宽度，性能会有所降低         | boolean                   | —                 | true  |
 
 ### Select Events
+
 | 事件名称           | 说明                   | 回调参数                 |
 |----------------|----------------------|----------------------|
 | change         | 选中值发生变化时触发           | 目前的选中值               |
@@ -94,21 +97,24 @@
 | focus          | 当 input 获得焦点时触发      | (event: Event)       |
 
 ### Select Slots
+
 | name   | 说明                 |
 |--------|--------------------|
 | —      | 自定义模板，参数为 { item } |
 | prefix | Select 组件头部内容      |
 | empty  | 无选项时的列表            |
 
-
 ### Options
-| 参数       | 说明                        | 类型                   | 可选值 | 默认值   |
-|----------|---------------------------|----------------------|-----|-------|
-| value    | 选项的值                      | string/number/object | —   | —     |
-| label    | 选项的标签，若不设置则默认与 `value` 相同 | string/number        | —   | —     |
-| disabled | 是否禁用该选项                   | boolean              | —   | false |
+
+| 参数              | 说明                        | 类型                   | 可选值 | 默认值   |
+|-----------------|---------------------------|----------------------|-----|-------|
+| value           | 选项的值                      | string/number/object | —   | —     |
+| label           | 选项的标签，若不设置则默认与 `value` 相同 | string/number        | —   | —     |
+| options (1.2.0) | 分组选项                      | array                | —   | —     |
+| disabled        | 是否禁用该选项                   | boolean              | —   | false |
 
 ### Methods
+
 | 方法名   | 说明                  | 参数 |
 |-------|---------------------|----|
 | focus | 使 input 获取焦点        | —  |

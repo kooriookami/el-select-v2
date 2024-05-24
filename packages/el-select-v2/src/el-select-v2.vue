@@ -39,7 +39,12 @@
       :key-field="valueKey"
       @visible="handleScrollerVisible"
     >
+      <li v-if="item._isGroup" class="el-select-group__title">{{ item[labelKey] }}</li>
+      <li v-else-if="item._isSplit" class="el-select-group__split">
+        <span class="el-select-group__split-dash" />
+      </li>
       <el-option
+        v-else
         :key="item[valueKey]"
         :value="item[valueKey]"
         :label="item[labelKey]"
@@ -61,6 +66,7 @@
   import { RecycleScroller } from 'vue-virtual-scroller';
   import 'vue-virtual-scroller/dist/vue-virtual-scroller.css';
   import isEqual from 'lodash/isEqual';
+  import { v4 as uuidv4 } from 'uuid';
 
   export default {
     name: 'ElSelectV2',
@@ -151,7 +157,7 @@
         }
         const { setSelected, cachedOptions } = this.$refs.select;
         const values = this.multiple ? this.localValue : [this.localValue];
-        const selectedOptions = this.options.filter(option => values?.includes(option[this.valueKey])).map(option => ({
+        const selectedOptions = this.flattedOptions.filter(option => values?.includes(option[this.valueKey])).map(option => ({
           value: option[this.valueKey],
           currentLabel: option[this.labelKey],
         }));
@@ -171,10 +177,17 @@
         this.$refs.scroller.scrollToItem(index);
       },
       localFilterMethod(query) {
-        this.localOptions = this.options.filter(option => option[this.labelKey].toLowerCase().includes(query.toLowerCase()));
+        const groupNameList = this.flattedOptions.filter(option => !option._isGroup && !option._isSplit &&
+          option[this.labelKey]?.toLowerCase().includes(query.toLowerCase())).map(option => option._groupName);
+        this.localOptions = this.flattedOptions.filter(option => {
+          if (option._isGroup || option._isSplit) {
+            return groupNameList.some(groupName => option._groupName === groupName);
+          }
+          return option[this.labelKey]?.toLowerCase().includes(query.toLowerCase());
+        });
       },
       updateOptions() {
-        this.localOptions = this.options;
+        this.localOptions = this.flattedOptions;
       },
       async updateDropdownWidth() {
         if (!this.$refs.select?.$refs.popper || this.fitInputWidth) {
@@ -207,6 +220,35 @@
       },
     },
     computed: {
+      flattedOptions() {
+        if (!Array.isArray(this.options)) {
+          return [];
+        }
+        const list = [];
+        this.options.forEach(option => {
+          const _groupName = uuidv4();
+          if (Array.isArray(option.options)) {
+            list.push({
+              ...option,
+              _isGroup: true,
+              _groupName,
+              [this.valueKey]: uuidv4(),
+            });
+            list.push(...option.options.map(subOption => ({
+              ...subOption,
+              _groupName,
+            })));
+            list.push({
+              _isSplit: true,
+              _groupName,
+              [this.valueKey]: uuidv4(),
+            });
+          } else {
+            list.push(option);
+          }
+        });
+        return list;
+      },
       scrollerStyle() {
         return {
           width: this.dropdownWidth ? `${this.dropdownWidth}px` : '',
@@ -264,6 +306,19 @@
 
   .el-scrollbar__bar {
     display: none;
+  }
+
+  .el-select-group__split {
+    position: relative;
+
+    .el-select-group__split-dash {
+      position: absolute;
+      left: 20px;
+      right: 20px;
+      height: 1px;
+      background: rgb(228, 231, 237);
+      top: 17px;
+    }
   }
 }
 </style>

@@ -101,11 +101,22 @@
           />
         </el-col>
         <el-col :span="span">
-          <p class="title">自适应菜单宽度</p>
+          <p class="title">自适应菜单宽度 (1.1.0)</p>
           <p class="description">计算每一项的宽度，选择最大的作为下拉菜单宽度</p>
           <el-select-v2
             v-model="form.value10"
             :options="longOptions"
+            :size="form.size"
+            :fit-input-width="false"
+            filterable
+          />
+        </el-col>
+        <el-col :span="span">
+          <p class="title">将选项进行分组 (1.2.0)</p>
+          <p class="description">你可以为选项进行分组来区分不同的选项</p>
+          <el-select-v2
+            v-model="form.value11"
+            :options="groupOptions"
             :size="form.size"
             :fit-input-width="false"
             filterable
@@ -168,6 +179,7 @@
         disabledOptions: [],
         remoteOptions: [],
         longOptions: [],
+        groupOptions: [],
         form: {
           value1: '',
           value2: '',
@@ -179,6 +191,7 @@
           value8: '',
           value9: [],
           value10: '',
+          value11: '',
           size: 'small',
         },
       };
@@ -199,6 +212,17 @@
           label: `long long long long long long long label ${i + 1}`,
         });
       }
+      this.groupOptions = Array.from({ length: 1000 }).map((_, idx) => {
+        const label = idx;
+        return {
+          value: `group ${label + 1}`,
+          label: `group ${label + 1}`,
+          options: Array.from({ length: 10 }).map((_, idx) => ({
+            value: `value ${idx + 1 + 10 * label}`,
+            label: `label ${idx + 1 + 10 * label}`,
+          })),
+        };
+      });
     },
     mounted() {
       useResizeObserver(this.$refs.demoContent, entries => {
