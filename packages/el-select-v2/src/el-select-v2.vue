@@ -277,6 +277,10 @@
         deep: true,
       },
       localOptions() {
+        // 去除最后一个分割线
+        if (this.localOptions.length && this.localOptions[this.localOptions.length - 1]._isSplit) {
+          this.localOptions.pop();
+        }
         this.updateDropdownWidth();
       },
     },
