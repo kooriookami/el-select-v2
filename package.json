@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@iconify/vue2": "^2.1.0",
-    "@vueuse/core": "^10.9.0",
+    "@vueuse/core": "^10.10.0",
     "el-select-v2": "workspace:*",
     "element-ui": "^2.15.14",
     "normalize.css": "^8.0.1",
