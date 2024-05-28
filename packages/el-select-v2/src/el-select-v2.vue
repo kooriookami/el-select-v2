@@ -40,9 +40,6 @@
       @visible="handleScrollerVisible"
     >
       <li v-if="item._isGroup" class="el-select-group__title">{{ item[labelKey] }}</li>
-      <li v-else-if="item._isSplit" class="el-select-group__split">
-        <span class="el-select-group__split-dash" />
-      </li>
       <el-option
         v-else
         :key="item[valueKey]"
@@ -177,10 +174,10 @@
         this.$refs.scroller.scrollToItem(index);
       },
       localFilterMethod(query) {
-        const groupNameList = this.flattedOptions.filter(option => !option._isGroup && !option._isSplit &&
+        const groupNameList = this.flattedOptions.filter(option => !option._isGroup &&
           option[this.labelKey]?.toLowerCase().includes(query.toLowerCase())).map(option => option._groupName);
         this.localOptions = this.flattedOptions.filter(option => {
-          if (option._isGroup || option._isSplit) {
+          if (option._isGroup) {
             return groupNameList.some(groupName => option._groupName === groupName);
           }
           return option[this.labelKey]?.toLowerCase().includes(query.toLowerCase());
@@ -238,11 +235,6 @@
               ...subOption,
               _groupName,
             })));
-            list.push({
-              _isSplit: true,
-              _groupName,
-              [this.valueKey]: uuidv4(),
-            });
           } else {
             list.push(option);
           }
@@ -277,10 +269,6 @@
         deep: true,
       },
       localOptions() {
-        // 去除最后一个分割线
-        if (this.localOptions.length && this.localOptions[this.localOptions.length - 1]._isSplit) {
-          this.localOptions.pop();
-        }
         this.updateDropdownWidth();
       },
     },
@@ -310,19 +298,6 @@
 
   .el-scrollbar__bar {
     display: none;
-  }
-
-  .el-select-group__split {
-    position: relative;
-
-    .el-select-group__split-dash {
-      position: absolute;
-      left: 20px;
-      right: 20px;
-      height: 1px;
-      background: rgb(228, 231, 237);
-      top: 17px;
-    }
   }
 }
 </style>
