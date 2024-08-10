@@ -115,7 +115,10 @@
         required: false,
       },
       defaultFirstOption: Boolean,
-      reserveKeyword: Boolean,
+      reserveKeyword: {
+        type: Boolean,
+        default: true,
+      },
       collapseTags: Boolean,
       popperAppendToBody: {
         type: Boolean,
