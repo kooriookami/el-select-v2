@@ -122,6 +122,30 @@
             filterable
           />
         </el-col>
+        <el-col :span="span">
+          <p class="title">下拉菜单的头部和底部 (1.3.0)</p>
+          <p class="description">您可以自定义下拉菜单的头部和底部</p>
+          <el-select-v2
+            v-model="form.value12"
+            :options="options"
+            :size="form.size"
+            multiple
+            collapse-tags
+          >
+            <template #header>
+              <el-checkbox
+                v-model="checkAll"
+                :indeterminate="indeterminate"
+                @change="selectMany"
+              >
+                选择前 20 项
+              </el-checkbox>
+            </template>
+            <template #footer>
+              <el-button type="primary" size="mini">底部按钮</el-button>
+            </template>
+          </el-select-v2>
+        </el-col>
       </el-row>
     </div>
     <div class="form">
@@ -192,8 +216,11 @@
           value9: [],
           value10: '',
           value11: '',
+          value12: [],
           size: 'small',
         },
+        checkAll: false,
+        indeterminate: false,
       };
     },
     created() {
@@ -272,6 +299,27 @@
           label: `label ${timestamp}`,
         });
         this.form.value1 = `value ${timestamp}`;
+      },
+      selectMany(val) {
+        this.indeterminate = false;
+        if (val) {
+          this.form.value12 = this.options.slice(0, 20).map(_ => _.value);
+        } else {
+          this.form.value12 = [];
+        }
+      },
+    },
+    watch: {
+      'form.value12'(val) {
+        if (val.length === 0) {
+          this.checkAll = false;
+          this.indeterminate = false;
+        } else if (val.length === this.options.length) {
+          this.checkAll = true;
+          this.indeterminate = false;
+        } else {
+          this.indeterminate = true;
+        }
       },
     },
   };

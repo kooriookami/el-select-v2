@@ -28,6 +28,9 @@
     v-bind="$attrs"
     v-on="$listeners"
   >
+    <div v-if="$slots.header" class="el-select-dropdown__header">
+      <slot name="header" />
+    </div>
     <RecycleScroller
       v-if="localOptions.length"
       ref="scroller"
@@ -50,6 +53,9 @@
         <slot name="default" :item="item" />
       </el-option>
     </RecycleScroller>
+    <div v-if="$slots.footer" class="el-select-dropdown__footer">
+      <slot name="footer" />
+    </div>
     <template v-if="$slots.prefix" slot="prefix">
       <slot name="prefix" />
     </template>
@@ -204,7 +210,7 @@
         const style = getComputedStyle(itemEl);
         const padding = parseFloat(style.paddingLeft) + parseFloat(style.paddingRight);
         const scrollWidth = 6;
-        ctx.font = style.font;
+        ctx.font = `bold ${style.font}`;
         let width = 0;
         this.localOptions.forEach(option => {
           const metrics = ctx.measureText(option[this.labelKey]);
@@ -280,7 +286,26 @@
 
 <style lang="scss">
 .el-select-v2__popper {
+  .el-select-dropdown__wrap {
+    max-height: unset;
+
+    .el-select-dropdown__list {
+      padding: 0;
+
+      .el-select-dropdown__header {
+        padding: 10px;
+        border-bottom: 1px solid #e4e7ed;
+      }
+
+      .el-select-dropdown__footer {
+        padding: 10px;
+        border-top: 1px solid #e4e7ed;
+      }
+    }
+  }
+
   .scroller {
+    padding: 6px 0;
     max-height: 238px;
 
     &::-webkit-scrollbar {
