@@ -25,6 +25,7 @@
     :reserve-keyword="reserveKeyword"
     :collapse-tags="collapseTags"
     :popper-append-to-body="popperAppendToBody"
+    :value-key="objectKey"
     v-bind="$attrs"
     v-on="$listeners"
   >
@@ -34,7 +35,7 @@
     <RecycleScroller
       v-if="localOptions.length"
       ref="scroller"
-      v-slot="{ item }"
+      v-slot="{ item, index }"
       class="scroller"
       :style="scrollerStyle"
       :items="localOptions"
@@ -45,7 +46,7 @@
       <li v-if="item._isGroup" class="el-select-group__title">{{ item[labelKey] }}</li>
       <el-option
         v-else
-        :key="item[valueKey]"
+        :key="index"
         :value="item[valueKey]"
         :label="item[labelKey]"
         :disabled="item.disabled"
@@ -69,6 +70,7 @@
   import { RecycleScroller } from 'vue-virtual-scroller';
   import 'vue-virtual-scroller/dist/vue-virtual-scroller.css';
   import isEqual from 'lodash/isEqual';
+  import isPlainObject from 'lodash/isPlainObject';
   import { v4 as uuidv4 } from 'uuid';
 
   export default {
@@ -92,6 +94,10 @@
       labelKey: {
         type: String,
         default: 'label',
+      },
+      objectKey: {
+        type: String,
+        default: 'value',
       },
       autocomplete: {
         type: String,
@@ -163,7 +169,7 @@
         }
         const { setSelected, cachedOptions } = this.$refs.select;
         const values = this.multiple ? this.localValue : [this.localValue];
-        const selectedOptions = this.flattedOptions.filter(option => values?.includes(option[this.valueKey])).map(option => ({
+        const selectedOptions = this.flattedOptions.filter(option => values.some(value => this.isSameValue(value, option[this.valueKey]))).map(option => ({
           value: option[this.valueKey],
           currentLabel: option[this.labelKey],
         }));
@@ -179,7 +185,7 @@
       },
       handleScrollerVisible() {
         const firstValue = this.multiple ? this.localValue?.[0] : this.localValue;
-        const index = this.localOptions.findIndex(option => option[this.valueKey] === firstValue);
+        const index = this.localOptions.findIndex(option => this.isSameValue(option[this.valueKey], firstValue));
         this.$refs.scroller.scrollToItem(index);
       },
       localFilterMethod(query) {
@@ -217,6 +223,12 @@
           width = Math.max(metrics.width, width);
         });
         this.dropdownWidth = Math.max(width + padding + scrollWidth, inputWidth - 2);
+      },
+      isSameValue(value1, value2) {
+        if (isPlainObject(value1) && isPlainObject(value2)) {
+          return value1[this.objectKey] === value2[this.objectKey];
+        }
+        return value1 === value2;
       },
       focus() {
         this.$refs.select.focus();

@@ -59,6 +59,7 @@ Vue.use(ElSelectV2);
 | options                 | 列表数据                                             | array                     | —                 | —     |
 | value-key               | value 键名                                         | string                    | —                 | value |
 | label-key               | label 键名                                         | string                    | —                 | label |
+| object-key (1.4.0)      | 绑定值为对象类型时的键名                                     | string                    | —                 | value |
 | min-item-size           | 每个选项的最小高度                                        | number                    | —                 | 34    |
 | multiple                | 是否多选                                             | boolean                   | —                 | false |
 | disabled                | 是否禁用                                             | boolean                   | —                 | false |

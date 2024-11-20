@@ -146,6 +146,16 @@
             </template>
           </el-select-v2>
         </el-col>
+        <el-col :span="span">
+          <p class="title">绑定对象 (1.4.0)</p>
+          <p class="description">使用 object-key 绑定对象值</p>
+          <el-select-v2
+            v-model="form.value13"
+            :options="objectOptions"
+            object-key="name"
+            :size="form.size"
+          />
+        </el-col>
       </el-row>
     </div>
     <div class="form">
@@ -204,6 +214,7 @@
         remoteOptions: [],
         longOptions: [],
         groupOptions: [],
+        objectOptions: [],
         form: {
           value1: '',
           value2: '',
@@ -217,6 +228,7 @@
           value10: '',
           value11: '',
           value12: [],
+          value13: '',
           size: 'small',
         },
         checkAll: false,
@@ -237,6 +249,12 @@
         this.longOptions.push({
           value: `value ${i + 1}`,
           label: `long long long long long long long label ${i + 1}`,
+        });
+        this.objectOptions.push({
+          value: {
+            name: `name ${i + 1}`,
+          },
+          label: `label ${i + 1}`,
         });
       }
       this.groupOptions = Array.from({ length: 1000 }).map((_, idx) => {
@@ -289,6 +307,7 @@
           if (key.startsWith('value')) {
             const index = Math.floor(Math.random() * this.options.length);
             this.form[key] = Array.isArray(this.form[key]) ? [this.options[index].value] : this.options[index].value;
+            this.form.value13 = JSON.parse(JSON.stringify(this.objectOptions[index].value));
           }
         });
       },
@@ -332,7 +351,6 @@
   overflow: hidden;
 
   .demo-content {
-    height: 100%;
     overflow: auto;
     flex-grow: 1;
     position: relative;
