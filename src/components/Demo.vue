@@ -147,7 +147,7 @@
           </el-select-v2>
         </el-col>
         <el-col :span="span">
-          <p class="title">绑定对象 (1.4.0)</p>
+          <p class="title">绑定对象值 (1.4.0)</p>
           <p class="description">使用 object-key 绑定对象值</p>
           <el-select-v2
             v-model="form.value13"
