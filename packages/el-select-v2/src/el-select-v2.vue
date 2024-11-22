@@ -9,7 +9,7 @@
     :disabled="disabled"
     :clearable="clearable"
     :filterable="filterable"
-    :allow-create="allowCreate"
+    :allow-create="false"
     :loading="loading"
     :popper-class="`el-select-v2__popper ${popperClass || ''}`"
     :remote="remote"
@@ -17,7 +17,7 @@
     :no-match-text="noMatchText"
     :no-data-text="noDataText"
     :remote-method="remoteMethod"
-    :filter-method="filterMethod || localFilterMethod"
+    :filter-method="localFilterMethod"
     :multiple="multiple"
     :multiple-limit="multipleLimit"
     :placeholder="placeholder"
@@ -35,7 +35,7 @@
     <RecycleScroller
       v-if="localOptions.length"
       ref="scroller"
-      v-slot="{ item, index }"
+      v-slot="{ item }"
       class="scroller"
       :style="scrollerStyle"
       :items="localOptions"
@@ -46,7 +46,7 @@
       <li v-if="item._isGroup" class="el-select-group__title">{{ item[labelKey] }}</li>
       <el-option
         v-else
-        :key="index"
+        :key="getOptionKey(item)"
         :value="item[valueKey]"
         :label="item[labelKey]"
         :disabled="item.disabled"
@@ -150,6 +150,7 @@
         localValue: '',
         localOptions: [],
         dropdownWidth: '',
+        query: '',
       };
     },
     mounted() {
@@ -157,6 +158,7 @@
       if (this.$refs.select) {
         this.$watch(() => this.$refs.select.visible, value => {
           if (value) {
+            this.query = '';
             this.updateOptions();
           }
         });
@@ -189,14 +191,19 @@
         this.$refs.scroller.scrollToItem(index);
       },
       localFilterMethod(query) {
-        const groupNameList = this.flattedOptions.filter(option => !option._isGroup &&
-          option[this.labelKey]?.toLowerCase().includes(query.toLowerCase())).map(option => option._groupName);
-        this.localOptions = this.flattedOptions.filter(option => {
-          if (option._isGroup) {
-            return groupNameList.some(groupName => option._groupName === groupName);
-          }
-          return option[this.labelKey]?.toLowerCase().includes(query.toLowerCase());
-        });
+        this.query = query;
+        if (typeof this.filterMethod === 'function') {
+          this.filterMethod(query);
+        } else {
+          const groupNameList = this.flattedOptions.filter(option => !option._isGroup &&
+            option[this.labelKey]?.toLowerCase().includes(query.toLowerCase())).map(option => option._groupName);
+          this.localOptions = this.flattedOptions.filter(option => {
+            if (option._isGroup) {
+              return groupNameList.some(groupName => option._groupName === groupName);
+            }
+            return option[this.labelKey]?.toLowerCase().includes(query.toLowerCase());
+          });
+        }
       },
       updateOptions() {
         this.localOptions = this.flattedOptions;
@@ -230,6 +237,10 @@
         }
         return value1 === value2;
       },
+      getOptionKey(item) {
+        const value = item[this.valueKey];
+        return isPlainObject(value) ? value[this.objectKey] : value;
+      },
       focus() {
         this.$refs.select.focus();
       },
@@ -260,6 +271,12 @@
             list.push(option);
           }
         });
+        if (this.allowCreate && this.query && !list.some(option => option[this.labelKey] === this.query)) {
+          list.unshift({
+            [this.valueKey]: this.query,
+            [this.labelKey]: this.query,
+          });
+        }
         return list;
       },
       scrollerStyle() {
