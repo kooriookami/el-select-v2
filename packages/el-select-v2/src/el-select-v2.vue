@@ -49,7 +49,7 @@
         :key="getOptionKey(item)"
         :value="item[valueKey]"
         :label="item[labelKey]"
-        :disabled="item.disabled"
+        :disabled="item[disabledKey]"
       >
         <slot name="default" :item="item" />
       </el-option>
@@ -67,6 +67,7 @@
 </template>
 
 <script>
+  import NavigationMixin from './navigation-mixin';
   import { RecycleScroller } from 'vue-virtual-scroller';
   import 'vue-virtual-scroller/dist/vue-virtual-scroller.css';
   import isEqual from 'lodash/isEqual';
@@ -74,6 +75,7 @@
   import { v4 as uuidv4 } from 'uuid';
 
   export default {
+    mixins: [NavigationMixin],
     name: 'ElSelectV2',
     components: {
       RecycleScroller,
@@ -94,6 +96,10 @@
       labelKey: {
         type: String,
         default: 'label',
+      },
+      disabledKey: {
+        type: String,
+        default: 'disabled',
       },
       objectKey: {
         type: String,
@@ -148,6 +154,7 @@
     data() {
       return {
         localValue: '',
+        localIndex: -1,
         localOptions: [],
         dropdownWidth: '',
         query: '',
@@ -156,6 +163,7 @@
     mounted() {
       this.updateSelectedLabel();
       if (this.$refs.select) {
+        this.$refs.select.navigateOptions = this.navigateOptions;
         this.$watch(() => this.$refs.select.visible, value => {
           if (value) {
             this.query = '';
@@ -187,10 +195,12 @@
       },
       handleScrollerVisible() {
         const firstValue = this.multiple ? this.localValue?.[0] : this.localValue;
-        const index = this.localOptions.findIndex(option => this.isSameValue(option[this.valueKey], firstValue));
-        this.$refs.scroller.scrollToItem(index);
+        this.localIndex = this.localOptions.findIndex(option => this.isSameValue(option[this.valueKey], firstValue));
+        this.$refs.scroller.scrollToItem(this.localIndex);
+        this.updateHoverIndex();
       },
       localFilterMethod(query) {
+        this.localIndex = this.defaultFirstOption ? 0 : -1;
         this.query = query;
         if (typeof this.filterMethod === 'function') {
           this.filterMethod(query);
@@ -300,7 +310,7 @@
         handler() {
           this.updateOptions();
           const inputs = this.$el.querySelectorAll('input');
-          if ([].indexOf.call(inputs, document.activeElement) === -1) {
+          if (!Array.from(inputs).includes(document.activeElement)) {
             this.updateSelectedLabel();
           }
         },
