@@ -43,7 +43,7 @@ export default {
         this.$refs.select.hoverIndex = -1;
         const localOption = this.localOptions[this.localIndex];
         if (localOption) {
-          this.$refs.select.hoverIndex = this.$refs.select.options.findIndex(option => option[this.valueKey] === localOption[this.valueKey]);
+          this.$refs.select.hoverIndex = this.$refs.select.options.findLastIndex(option => this.isSameValue(option[this.valueKey], localOption[this.valueKey]));
         }
       }, {
         immediate: true,
