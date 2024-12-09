@@ -49,5 +49,10 @@ export default {
         immediate: true,
       });
     },
+    hoverItem(item) {
+      if (!item[this.disabledKey]) {
+        this.localIndex = this.localOptions.indexOf(item);
+      }
+    },
   },
 };

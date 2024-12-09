@@ -50,6 +50,7 @@
         :value="item[valueKey]"
         :label="item[labelKey]"
         :disabled="item[disabledKey]"
+        @mouseenter.native="hoverItem(item)"
       >
         <slot name="default" :item="item" />
       </el-option>
