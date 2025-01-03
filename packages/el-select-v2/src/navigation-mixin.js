@@ -32,7 +32,6 @@ export default {
           return;
         }
         this.$refs.scroller.scrollToItem(this.localIndex);
-        this.updateHoverIndex();
       }
     },
     updateHoverIndex() {

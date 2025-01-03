@@ -21,7 +21,6 @@
     :multiple="multiple"
     :multiple-limit="multipleLimit"
     :placeholder="placeholder"
-    :default-first-option="defaultFirstOption"
     :reserve-keyword="reserveKeyword"
     :collapse-tags="collapseTags"
     :popper-append-to-body="popperAppendToBody"
@@ -197,8 +196,10 @@
       handleScrollerVisible() {
         const firstValue = this.multiple ? this.localValue?.[0] : this.localValue;
         this.localIndex = this.localOptions.findIndex(option => this.isSameValue(option[this.valueKey], firstValue));
+        if (this.localIndex === -1) {
+          this.localIndex = this.defaultFirstOption ? 0 : -1;
+        }
         this.$refs.scroller.scrollToItem(this.localIndex);
-        this.updateHoverIndex();
       },
       localFilterMethod(query) {
         this.localIndex = this.defaultFirstOption ? 0 : -1;
@@ -319,6 +320,9 @@
       },
       localOptions() {
         this.updateDropdownWidth();
+      },
+      localIndex() {
+        this.updateHoverIndex();
       },
     },
   };
