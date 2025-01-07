@@ -97,6 +97,10 @@
         type: String,
         default: 'label',
       },
+      optionsKey: {
+        type: String,
+        default: 'options',
+      },
       disabledKey: {
         type: String,
         default: 'disabled',
@@ -268,14 +272,14 @@
         const list = [];
         this.options.forEach(option => {
           const _groupName = uuidv4();
-          if (Array.isArray(option.options)) {
+          if (Array.isArray(option[this.optionsKey])) {
             list.push({
               ...option,
               _isGroup: true,
               _groupName,
               [this.valueKey]: uuidv4(),
             });
-            list.push(...option.options.map(subOption => ({
+            list.push(...option[this.optionsKey].map(subOption => ({
               ...subOption,
               _groupName,
             })));

@@ -1,5 +1,11 @@
 ## Changelog
 
+### 1.4.6
+
+_2025-01-07_
+
+- 添加 options-key 参数
+
 ### 1.4.5
 
 _2025-01-03_
@@ -10,7 +16,7 @@ _2025-01-03_
 
 _2025-01-03_
 
-- 修复 defaultFirstOption 异常
+- 修复 default-first-option 异常
 
 ### 1.4.1
 
