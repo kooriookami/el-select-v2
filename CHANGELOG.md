@@ -1,5 +1,12 @@
 ## Changelog
 
+### 2.0.0
+
+_2025-03-18_
+
+- 添加 props 参数，并移除 label-key、options-key、disabled-key、object-key 参数，原先的 object-key 改名为 value-key。
+- props 默认值为 { value: 'value', label: 'label', disabled: 'disabled', options: 'options' }。
+
 ### 1.4.6
 
 _2025-01-07_

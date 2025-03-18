@@ -1,6 +1,6 @@
 {
   "name": "el-select-v2",
-  "version": "1.4.6",
+  "version": "2.0.0",
   "main": "src/index.js",
   "module": "src/index.js",
   "repository": {
@@ -18,7 +18,7 @@
   "dependencies": {
     "element-ui": "^2.15.14",
     "lodash": "^4.17.21",
-    "uuid": "^9.0.1",
+    "uuid": "^11.1.0",
     "vue": "^2.7.16",
     "vue-virtual-scroller": "^1.1.2"
   }

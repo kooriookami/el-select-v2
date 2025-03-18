@@ -1,6 +1,7 @@
 <template>
   <div class="demo-container">
     <div ref="demoContent" class="demo-content">
+      <el-alert type="warning">原先 1.x 版本已经废弃，请尽快升级到 2.x</el-alert>
       <el-row :gutter="20">
         <el-col :span="span">
           <p class="title">基础用法</p>
@@ -101,7 +102,7 @@
           />
         </el-col>
         <el-col :span="span">
-          <p class="title">自适应菜单宽度 (1.1.0)</p>
+          <p class="title">自适应菜单宽度</p>
           <p class="description">计算每一项的宽度，选择最大的作为下拉菜单宽度</p>
           <el-select-v2
             v-model="form.value10"
@@ -112,7 +113,7 @@
           />
         </el-col>
         <el-col :span="span">
-          <p class="title">将选项进行分组 (1.2.0)</p>
+          <p class="title">将选项进行分组</p>
           <p class="description">你可以为选项进行分组来区分不同的选项</p>
           <el-select-v2
             v-model="form.value11"
@@ -123,7 +124,7 @@
           />
         </el-col>
         <el-col :span="span">
-          <p class="title">下拉菜单的头部和底部 (1.3.0)</p>
+          <p class="title">下拉菜单的头部和底部</p>
           <p class="description">您可以自定义下拉菜单的头部和底部</p>
           <el-select-v2
             v-model="form.value12"
@@ -147,12 +148,12 @@
           </el-select-v2>
         </el-col>
         <el-col :span="span">
-          <p class="title">绑定对象值 (1.4.0)</p>
-          <p class="description">使用 object-key 绑定对象值</p>
+          <p class="title">绑定对象值</p>
+          <p class="description">使用 value-key 绑定对象值</p>
           <el-select-v2
             v-model="form.value13"
             :options="objectOptions"
-            object-key="name"
+            value-key="name"
             :size="form.size"
           />
         </el-col>

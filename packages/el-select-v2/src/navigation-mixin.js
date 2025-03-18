@@ -1,7 +1,7 @@
 export default {
   computed: {
     optionsAllDisabled() {
-      return this.localOptions.every(option => option[this.disabledKey]);
+      return this.localOptions.every(option => option[this.aliasProps.disabled]);
     },
   },
   methods: {
@@ -27,7 +27,7 @@ export default {
           }
         }
         localOption = this.localOptions[this.localIndex];
-        if (localOption[this.disabledKey] || localOption._isGroup) {
+        if (localOption[this.aliasProps.disabled] || localOption._isGroup) {
           this.navigateOptions(direction);
           return;
         }
@@ -42,14 +42,14 @@ export default {
         this.$refs.select.hoverIndex = -1;
         const localOption = this.localOptions[this.localIndex];
         if (localOption) {
-          this.$refs.select.hoverIndex = this.$refs.select.options.findLastIndex(option => this.isSameValue(option.value, localOption[this.valueKey]));
+          this.$refs.select.hoverIndex = this.$refs.select.options.findLastIndex(option => this.isSameValue(option.value, localOption[this.aliasProps.value]));
         }
       }, {
         immediate: true,
       });
     },
     hoverItem(item) {
-      if (!item[this.disabledKey]) {
+      if (!item[this.aliasProps.disabled]) {
         this.localIndex = this.localOptions.indexOf(item);
       }
     },

@@ -24,7 +24,7 @@
     :reserve-keyword="reserveKeyword"
     :collapse-tags="collapseTags"
     :popper-append-to-body="popperAppendToBody"
-    :value-key="objectKey"
+    :value-key="valueKey"
     v-bind="$attrs"
     v-on="$listeners"
   >
@@ -39,16 +39,16 @@
       :style="scrollerStyle"
       :items="localOptions"
       :min-item-size="minItemSize"
-      :key-field="valueKey"
+      :key-field="aliasProps.value"
       @visible="handleScrollerVisible"
     >
-      <li v-if="item._isGroup" class="el-select-group__title">{{ item[labelKey] }}</li>
+      <li v-if="item._isGroup" class="el-select-group__title">{{ item[aliasProps.label] }}</li>
       <el-option
         v-else
         :key="getOptionKey(item)"
-        :value="item[valueKey]"
-        :label="item[labelKey]"
-        :disabled="item[disabledKey]"
+        :value="item[aliasProps.value]"
+        :label="item[aliasProps.label]"
+        :disabled="item[aliasProps.disabled]"
         @mouseenter.native="hoverItem(item)"
       >
         <slot name="default" :item="item" />
@@ -90,22 +90,6 @@
         default: () => [],
       },
       valueKey: {
-        type: String,
-        default: 'value',
-      },
-      labelKey: {
-        type: String,
-        default: 'label',
-      },
-      optionsKey: {
-        type: String,
-        default: 'options',
-      },
-      disabledKey: {
-        type: String,
-        default: 'disabled',
-      },
-      objectKey: {
         type: String,
         default: 'value',
       },
@@ -154,6 +138,10 @@
         type: Boolean,
         default: true,
       },
+      props: {
+        type: Object,
+        default: () => ({}),
+      },
     },
     data() {
       return {
@@ -162,6 +150,12 @@
         localOptions: [],
         dropdownWidth: '',
         query: '',
+        defaultProps: {
+          label: 'label',
+          value: 'value',
+          disabled: 'disabled',
+          options: 'options',
+        },
       };
     },
     mounted() {
@@ -183,9 +177,9 @@
         }
         const { setSelected, cachedOptions } = this.$refs.select;
         const values = this.multiple ? this.localValue : [this.localValue];
-        const selectedOptions = this.flattedOptions.filter(option => values?.some(value => this.isSameValue(value, option[this.valueKey]))).map(option => ({
-          value: option[this.valueKey],
-          currentLabel: option[this.labelKey],
+        const selectedOptions = this.flattedOptions.filter(option => values?.some(value => this.isSameValue(value, option[this.aliasProps.value]))).map(option => ({
+          value: option[this.aliasProps.value],
+          currentLabel: option[this.aliasProps.label],
         }));
         selectedOptions.forEach(option => {
           const cachedOption = cachedOptions.find(cachedOption => cachedOption.value === option.value);
@@ -199,7 +193,7 @@
       },
       handleScrollerVisible() {
         const firstValue = this.multiple ? this.localValue?.[0] : this.localValue;
-        this.localIndex = this.localOptions.findIndex(option => this.isSameValue(option[this.valueKey], firstValue));
+        this.localIndex = this.localOptions.findIndex(option => this.isSameValue(option[this.aliasProps.value], firstValue));
         if (this.localIndex === -1) {
           this.localIndex = this.defaultFirstOption ? 0 : -1;
         }
@@ -212,12 +206,12 @@
           this.filterMethod(query);
         } else {
           const groupNameList = this.flattedOptions.filter(option => !option._isGroup &&
-            option[this.labelKey]?.toLowerCase().includes(query.toLowerCase())).map(option => option._groupName);
+            option[this.aliasProps.label]?.toLowerCase().includes(query.toLowerCase())).map(option => option._groupName);
           this.localOptions = this.flattedOptions.filter(option => {
             if (option._isGroup) {
               return groupNameList.some(groupName => option._groupName === groupName);
             }
-            return option[this.labelKey]?.toLowerCase().includes(query.toLowerCase());
+            return option[this.aliasProps.label]?.toLowerCase().includes(query.toLowerCase());
           });
         }
       },
@@ -242,20 +236,20 @@
         ctx.font = `bold ${style.font}`;
         let width = 0;
         this.localOptions.forEach(option => {
-          const metrics = ctx.measureText(option[this.labelKey]);
+          const metrics = ctx.measureText(option[this.aliasProps.label]);
           width = Math.max(metrics.width, width);
         });
         this.dropdownWidth = Math.max(width + padding + scrollWidth, inputWidth - 2);
       },
       isSameValue(value1, value2) {
         if (isPlainObject(value1) && isPlainObject(value2)) {
-          return value1[this.objectKey] === value2[this.objectKey];
+          return value1[this.valueKey] === value2[this.valueKey];
         }
         return value1 === value2;
       },
       getOptionKey(item) {
-        const value = item[this.valueKey];
-        return isPlainObject(value) ? value[this.objectKey] : value;
+        const value = item[this.aliasProps.value];
+        return isPlainObject(value) ? value[this.valueKey] : value;
       },
       focus() {
         this.$refs.select.focus();
@@ -265,6 +259,12 @@
       },
     },
     computed: {
+      aliasProps() {
+        return {
+          ...this.defaultProps,
+          ...this.props,
+        };
+      },
       flattedOptions() {
         if (!Array.isArray(this.options)) {
           return [];
@@ -272,14 +272,14 @@
         const list = [];
         this.options.forEach(option => {
           const _groupName = uuidv4();
-          if (Array.isArray(option[this.optionsKey])) {
+          if (Array.isArray(option[this.aliasProps.options])) {
             list.push({
               ...option,
               _isGroup: true,
               _groupName,
-              [this.valueKey]: uuidv4(),
+              [this.aliasProps.value]: uuidv4(),
             });
-            list.push(...option[this.optionsKey].map(subOption => ({
+            list.push(...option[this.aliasProps.options].map(subOption => ({
               ...subOption,
               _groupName,
             })));
@@ -287,10 +287,10 @@
             list.push(option);
           }
         });
-        if (this.allowCreate && this.query && !list.some(option => option[this.labelKey] === this.query)) {
+        if (this.allowCreate && this.query && !list.some(option => option[this.aliasProps.label] === this.query)) {
           list.unshift({
-            [this.valueKey]: this.query,
-            [this.labelKey]: this.query,
+            [this.aliasProps.value]: this.query,
+            [this.aliasProps.label]: this.query,
           });
         }
         return list;
