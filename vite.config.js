@@ -55,7 +55,6 @@ const buildLib = {
       editPackageJson(),
     ],
   },
-  target: ['es2015'],
 };
 
 const buildWebsite = {
