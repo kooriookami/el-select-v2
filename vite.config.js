@@ -1,9 +1,9 @@
-import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue2';
-import copy from 'rollup-plugin-copy';
-import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js';
 import jsonfile from 'jsonfile';
 import path from 'path';
+import copy from 'rollup-plugin-copy';
+import { defineConfig } from 'vite';
+import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js';
 
 function editPackageJson() {
   return {
@@ -42,19 +42,19 @@ const buildLib = {
         'element-ui': 'ElementUI',
       },
     },
-    plugins: [
-      cssInjectedByJsPlugin(),
-      copy({
-        targets: [
-          { src: 'LICENSE', dest: 'dist' },
-          { src: 'README.md', dest: 'dist' },
-          { src: 'packages/el-select-v2/package.json', dest: 'dist' },
-        ],
-        hook: 'writeBundle',
-      }),
-      editPackageJson(),
-    ],
   },
+  plugins: [
+    cssInjectedByJsPlugin(),
+    copy({
+      targets: [
+        { src: 'LICENSE', dest: 'dist' },
+        { src: 'README.md', dest: 'dist' },
+        { src: 'packages/el-select-v2/package.json', dest: 'dist' },
+      ],
+      hook: 'writeBundle',
+    }),
+    editPackageJson(),
+  ],
 };
 
 const buildWebsite = {
