@@ -32,7 +32,7 @@
     "jsonfile": "^6.1.0",
     "rollup-plugin-copy": "^3.5.0",
     "sass": "^1.86.0",
-    "vite": "^6.2.2",
+    "vite": "^5.4.17",
     "vite-plugin-css-injected-by-js": "^3.5.2"
   },
   "engines": {

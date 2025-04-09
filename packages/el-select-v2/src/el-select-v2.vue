@@ -49,7 +49,7 @@
         :value="item[aliasProps.value]"
         :label="item[aliasProps.label]"
         :disabled="item[aliasProps.disabled]"
-        @mouseenter.native="hoverItem(item)"
+        @mousemove.native="hoverItem(item)"
       >
         <slot name="default" :item="item" />
       </el-option>
