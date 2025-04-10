@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "build:lib": "vite build -- lib",
+    "build:lib": "vite build --config vite.config-lib.js",
     "preview": "vite preview",
     "publish": "npm publish dist/ --registry https://registry.npmjs.org",
     "lint": "eslint ./src --ext .vue,.js,.ts,.jsx,.tsx",
