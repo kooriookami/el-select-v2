@@ -233,13 +233,7 @@
         const style = getComputedStyle(itemEl);
         const padding = parseFloat(style.paddingLeft) + parseFloat(style.paddingRight);
         const scrollWidth = 6;
-        const fontParts = style.font.split(' ');
-        ctx.font = [
-          'bold',
-          ...fontParts.filter(
-            p => !p.match(/(bold|normal|lighter|bolder|\d{3})/),
-          ),
-        ].join(' ');
+        ctx.font = `bold ${style.font.replace(new RegExp(`\\b${style.fontWeight}\\b`), '')}`;
         let width = 0;
         this.localOptions.forEach(option => {
           const metrics = ctx.measureText(option[this.aliasProps.label]);
