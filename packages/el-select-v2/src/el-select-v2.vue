@@ -323,6 +323,7 @@
         deep: true,
       },
       localOptions() {
+        this.updateHoverIndex();
         this.updateDropdownWidth();
       },
       localIndex() {
