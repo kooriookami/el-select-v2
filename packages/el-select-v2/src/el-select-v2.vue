@@ -39,7 +39,7 @@
       :style="scrollerStyle"
       :items="localOptions"
       :min-item-size="minItemSize"
-      :key-field="aliasProps.value"
+      :key-field="aliasProps.key||aliasProps.value"
       @visible="handleScrollerVisible"
     >
       <li v-if="item._isGroup" class="el-select-group__title">{{ item[aliasProps.label] }}</li>
@@ -155,6 +155,7 @@
           value: 'value',
           disabled: 'disabled',
           options: 'options',
+          key:undefined//props中传入key作为唯一标识
         },
       };
     },
