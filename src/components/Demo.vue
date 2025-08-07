@@ -13,6 +13,16 @@
           />
         </el-col>
         <el-col :span="span">
+          <p class="title">基础用法(重复value值)</p>
+          <p class="description">适用广泛的基础选择器</p>
+          <el-select-v2
+            v-model="form.value1"
+            :options="testOptions"
+            :size="form.size"
+            :props="{key:'_key_'}"
+          />
+        </el-col>
+        <el-col :span="span">
           <p class="title">有禁用选项</p>
           <p class="description">在 options 中，设定 disabled 值为 true，即可禁用该选项</p>
           <el-select-v2
@@ -211,6 +221,7 @@
         loading: false,
         span: 6,
         options: [],
+        testOptions:[],
         disabledOptions: [],
         remoteOptions: [],
         longOptions: [],
@@ -242,6 +253,13 @@
           value: `value ${i + 1}`,
           label: `label ${i + 1}`,
         });
+        for (let j = 0; j < 3; j++) {
+          this.testOptions.push({
+            value: `value ${i + 1}`,
+            label: `label ${i + 1}`,
+            _key_:`_key_${j} ${i + 1}`
+          });
+        }
         this.disabledOptions.push({
           value: `value ${i + 1}`,
           label: `label ${i + 1}`,

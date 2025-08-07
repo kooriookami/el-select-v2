@@ -93,6 +93,7 @@ Vue.use(ElSelectV2);
 | label    | 指定节点标签为节点对象的某个属性值   | string | label    |
 | options  | 指定选项的子选项为选项对象的某个属性值 | string | options  |
 | disabled | 指定选项的禁用为选项对象的某个属性值  | string | disabled |
+| key      | 指定选项的唯一标识为选项对象的某个属性值（不传则为value）| string | — |
 
 ### Select Events
 
