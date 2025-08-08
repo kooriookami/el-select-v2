@@ -137,9 +137,9 @@
               <el-checkbox
                 v-model="checkAll"
                 :indeterminate="indeterminate"
-                @change="selectMany"
+                @change="selectAll"
               >
-                选择前 20 项
+                全选
               </el-checkbox>
             </template>
             <template #footer>
@@ -320,10 +320,10 @@
         });
         this.form.value1 = `value ${timestamp}`;
       },
-      selectMany(val) {
+      selectAll(val) {
         this.indeterminate = false;
         if (val) {
-          this.form.value12 = this.options.slice(0, 20).map(_ => _.value);
+          this.form.value12 = this.options.map(_ => _.value);
         } else {
           this.form.value12 = [];
         }

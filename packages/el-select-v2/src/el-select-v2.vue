@@ -176,7 +176,7 @@
           return;
         }
         const { setSelected, cachedOptions } = this.$refs.select;
-        const values = this.multiple ? this.localValue : [this.localValue];
+        const values = this.multiple ? (this.collapseTags ? this.localValue?.slice(0, 1) : this.localValue) : [this.localValue];
         const selectedOptions = this.flattedOptions.filter(option => values?.some(value => this.isSameValue(value, option[this.aliasProps.value]))).map(option => ({
           value: option[this.aliasProps.value],
           currentLabel: option[this.aliasProps.label],
